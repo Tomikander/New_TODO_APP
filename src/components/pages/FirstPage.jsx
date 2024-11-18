@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import FetchTasks from "../../utils/FetchTasks";
 import background from "/video/background.mp4";
 
 export const FirstPage = () => {
@@ -8,17 +9,7 @@ export const FirstPage = () => {
   const [editTaskIndex, setEditTaskIndex] = useState(null);
 
 useEffect(() => {
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch("/todos");
-      const data = await response.lson();
-      setTaskList(data);
-    } catch(error) {
-        console.log("Ошибка при загрузке задач:", error);
-    }
-  };
-
-  fetchTasks();
+  FetchTasks(setTaskList);
 }, []);
 
 // Handler for changing the value in the input field
