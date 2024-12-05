@@ -84,6 +84,8 @@ useEffect(() => {
           {taskList.map((task, index) => (
             <li className="task-item" key={index}>
               <input
+                id={`task-checkbox-${index}`}
+                name="task"
                 className="checkbox"
                 type="checkbox"
                 onChange={() => handleTaskCompletion(index)}
