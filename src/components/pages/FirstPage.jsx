@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FetchTasks from "../../utils/FetchTasks";
+import fetchTasks from "../../utils/FetchTasks";
 import background from "/video/background.mp4";
 
 export const FirstPage = () => {
@@ -9,7 +9,7 @@ export const FirstPage = () => {
   const [editTaskIndex, setEditTaskIndex] = useState(null);
 
 useEffect(() => {
-  FetchTasks(setTaskList);
+  fetchTasks(setTaskList);
 }, []);
 
 // Handler for changing the value in the input field
