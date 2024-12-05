@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import fetchTasks from "../../utils/FetchTasks";
 import background from "/video/background.mp4";
 
 export const FirstPage = () => {
@@ -8,25 +9,15 @@ export const FirstPage = () => {
   const [editTaskIndex, setEditTaskIndex] = useState(null);
 
 useEffect(() => {
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch("/todos");
-      const data = await response.lson();
-      setTaskList(data);
-    } catch(error) {
-        console.log("Ошибка при загрузке задач:", error);
-    }
-  };
-
-  fetchTasks();
+  fetchTasks(setTaskList);
 }, []);
 
-// Обработчик изменения значения в поле ввода
+// Handler for changing the value in the input field
   const handleInputChange = (e) => {
     setCurrentTaskValue(e.target.value);
   };
 
-  // Обработчик добавления или сохранения задачи
+  // Handler for adding or saving a task
   const handleAddOrUpdateTask = () => {
     if (currentTaskValue.trim().length >= 3 && currentTaskValue.trim().length <= 200) {
       if (editTaskIndex !== null) {
@@ -42,19 +33,19 @@ useEffect(() => {
     }
   };
 
-  // Обработчик удаления задачи
+  // Task deletion handler
   const handleDeleteTask = (index) => {
     const updatedTaskList = taskList.filter((_, i) => i !== index);
     setTaskList(updatedTaskList);
   };
 
-  // Обработчик редактирования задачи
+ // Task editing handler
   const handleEditTask = (index) => {
     setCurrentTaskValue(taskList[index].value);
     setEditTaskIndex(index);
   };
 
-  // Обработчик выполнения задачи
+  // Task execution handler
   const handleTaskCompletion = (index) => {
     const completedTask = taskList[index];
     const updatedTaskList = taskList.filter((_, i) => i !== index);
@@ -62,7 +53,7 @@ useEffect(() => {
     setCompletedTasks([...completedTasks, completedTask]);
   };
 
-  // Проверка на валидность поля ввода
+  // Checking the validity of the input field
   const isButtonDisabled = currentTaskValue.trim().length < 3 || currentTaskValue.trim().length > 200;
 
   return (
@@ -93,6 +84,8 @@ useEffect(() => {
           {taskList.map((task, index) => (
             <li className="task-item" key={index}>
               <input
+                id={`task-checkbox-${index}`}
+                name="task"
                 className="checkbox"
                 type="checkbox"
                 onChange={() => handleTaskCompletion(index)}
@@ -116,7 +109,7 @@ useEffect(() => {
           ))}
         </ul>
 
-        {/* Список выполненных задач */}
+        {/* List of completed tasks */}
         {completedTasks.length > 0 && (
           <>
             <h2>Готово</h2>
